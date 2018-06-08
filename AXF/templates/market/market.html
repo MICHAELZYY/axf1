@@ -1,0 +1,125 @@
+{% extends 'base_main.html' %}
+{% load static %}
+{% block title %}
+    闪购
+{% endblock %}
+{% block extCSS %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'app/market/market.css' %}">
+{% endblock %}
+
+{% block extJS %}
+    <script src="{% static 'app/market/market.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+    <div id="market">
+
+        {# 左侧的主分类 #}
+        <aside>
+            <ul>
+                {% for foodtype in foodtypes %}
+                <li>
+                    <a href="{% url 'App:market_with_params' foodtype.typeid '0' '0' %}">{{ foodtype.typename }}</a>
+                    {% if typeid == foodtype.typeid %}
+                        <div class="yellowSlide"></div>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </aside>
+
+        {# 右侧 #}
+        <section>
+
+            {# 导航nav #}
+            <nav>
+                <ul>
+                    <li id="child_type">
+                        <span>
+                            全部类型 <span id="child_type_icon" class="glyphicon glyphicon-chevron-down"></span>
+                        </span>
+                    </li>
+                    <li id="sort_rule">
+                        <span>
+                            综合排序 <span id="sort_rule_icon" class="glyphicon glyphicon-chevron-down"></span>
+                        </span>
+                    </li>
+                </ul>
+            </nav>
+
+
+            {# 商品 #}
+            <menu>
+                <ul>
+                    {% for goods in goods_list %}
+                        <li>
+                            <a href="#">
+                                <img src="{{ goods.productimg }}" />
+                                <div class="shoppingInfo">
+                                    <h6>{{ goods.productlongname }}</h6>
+                                    <p class="detailTag">
+                                        <span>精选</span>
+                                    </p>
+                                    <p class="unit">{{ goods.specifics }}</p>
+                                    <p class="price">
+                                        <span> ¥{{ goods.price }}</span>
+                                        <s> ¥{{ goods.marketprice }}</s>
+                                    </p>
+                                </div>
+                            </a>
+
+                        <section>
+                                <button class="reduce">-</button>
+                                <span class="number">1</span>
+                                <button class="add">+</button>
+                        </section>
+                        <button goodsid="{{ goods.id }}" class="addtocart">加入购物车</button>
+
+                        </li>
+                    {% endfor %}
+                </ul>
+
+
+                {# 子分类数据 #}
+                <div id="child_type_container">
+                    <div>
+                        {% for child_type in child_type_list %}
+                            <a href="{% url 'App:market_with_params' typeid child_type.1 '0' %}">
+                                <span>{{ child_type.0 }}</span>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {# 排序规则 #}
+                <div id="sort_rule_container">
+                    <div>
+                        <a href="{% url 'App:market_with_params' typeid typechildid '0' %}">
+                            <span>综合排序</span>
+                        </a>
+                        <a href="{% url 'App:market_with_params' typeid typechildid '1' %}">
+                            <span>销量排序</span>
+                        </a>
+                        <a href="{% url 'App:market_with_params' typeid typechildid '2' %}">
+                            <span>价格降序</span>
+                        </a>
+                        <a href="{% url 'App:market_with_params' typeid typechildid '3' %}">
+                            <span>价格升序</span>
+                        </a>
+                    </div>
+                </div>
+
+            </menu>
+
+
+
+        </section>
+
+
+
+
+    </div>
+{% endblock %}
+
