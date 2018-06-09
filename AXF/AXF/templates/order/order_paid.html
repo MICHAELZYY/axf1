@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extCSS %}
+    <link rel="stylesheet" href="{% static 'app/order/order_waitpay.css' %}">
+{% endblock %}
+
+{% block header %}
+    <header>
+        <div>待收货</div>
+    </header>
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+
+        <ul class="orders">
+            {% for order in orders %}
+                <li >
+                    <p style="color: red">订单号:{{ order.order_id }}</p>
+                    <ul class="ordergoods">
+
+                        {% for ordergoods in order.ordergoods_set.all %}
+                             <div>
+                                <li>
+                                    <img src="{{ ordergoods.goods.productimg }}" >
+                                </li>
+                            </div>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+
+<div><a href="{% url 'App:order_waitpay' %}">继续待付款订单</a></div>
+            <div class="return">
+                <a href="{% url 'App:home' %}">返回首页</a>
+                <a href="{% url 'App:market' %}">返回闪购</a>
+                <a href="{% url 'App:cart' %}">返回购物车</a>
+                <a href="{% url 'App:mine' %}">返回我的</a>
+
+    </div>
+
+{% endblock %}

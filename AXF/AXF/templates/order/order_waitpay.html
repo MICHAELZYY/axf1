@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extCSS %}
+    <link rel="stylesheet" href="{% static 'app/order/order_waitpay.css' %}">
+{% endblock %}
+{% block extJS %}
+    <script src="{% static 'app/order/order_waitpay.js' %}"></script>
+
+{% endblock %}
+{% block header %}
+    <header>
+        <div>待付款订单</div>
+    </header>
+{% endblock %}
+
+
+{% block content %}
+
+
+    <div class="container">
+
+        <ul class="orders">
+            {% if orders %}
+                {% for order in orders %}
+                    <li >
+                        <p >订单号:
+                            <span class="orderid" style="color: red">{{ order.order_id }}</span>
+                        </p>
+                        <div>
+                        <ul class="ordergoods">
+                            {% for ordergoods in order.ordergoods_set.all %}
+
+                                <li>
+                                    <img src="{{ ordergoods.goods.productimg }}" >
+                                </li>
+
+                            {% endfor %}
+                        </ul>
+                         </div>
+                        <p class="waitpay"><a  href="#">去付款</a></p>
+                        <p class="canclepay"><a href="#">取消订单</a></p>
+
+                    </li>
+                {% endfor %}
+            {% else %}
+                <div>没有订单信息,点击 <a href="{% url 'App:market' %}">闪购</a> 选购吧</div>
+            {% endif %}
+
+
+        </ul>
+
+
+    </div>
+<div class="return">
+                <a href="{% url 'App:home' %}">返回首页</a>
+                <a href="{% url 'App:market' %}">返回闪购</a>
+                <a href="{% url 'App:cart' %}">返回购物车</a>
+                <a href="{% url 'App:mine' %}">返回我的</a>
+            </div>
+{% endblock %}
